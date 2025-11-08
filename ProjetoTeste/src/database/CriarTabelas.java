@@ -68,6 +68,22 @@ class CriarTabelas {
                         ")"
         );
 
+        stmt.executeUpdate(
+                "CREATE TABLE IF NOT EXISTS funcionario_especial (" +
+                        "id_vendedor BIGINT PRIMARY KEY, " +
+                        "bonus DECIMAL(10, 2) DEFAULT 0.00, " +
+                        "FOREIGN KEY (id_vendedor) REFERENCES vendedor(id)" +
+                ")"
+        );
+
+        stmt.executeUpdate(
+                "CREATE TABLE IF NOT EXISTS cliente_especial (" +
+                        "id_cliente BIGINT PRIMARY KEY, " +
+                        "cashback DECIMAL(5, 2) DEFAULT 0.00, " +
+                        "FOREIGN KEY (id_cliente) REFERENCES clientes(id)" +
+                ")"
+        );
+
         inserirDados(stmt);
     }
 
