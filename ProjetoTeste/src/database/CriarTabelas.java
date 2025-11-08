@@ -1,5 +1,8 @@
 package database;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+
 class CriarTabelas {
     public static void criar(Statement stmt) throws SQLException {
         // Tabela de Planos
@@ -7,139 +10,67 @@ class CriarTabelas {
                 "CREATE TABLE IF NOT EXISTS clientes (" +
                         "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
                         "nome VARCHAR(255) NOT NULL, " +
-                        "sexo CHAR('F', 'M', 'O'), " +
+                        "sexo ENUM('F', 'M', 'O'), " +
                         "idade int, " +
                         "dataNasc DATETIME" +
                         ")"
         );
 
-        // Tabela de Instituições
         stmt.executeUpdate(
-                "CREATE TABLE IF NOT EXISTS institutions (" +
+                "CREATE TABLE IF NOT EXISTS produtos(" +
                         "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
-                        "institution_name VARCHAR(255) NOT NULL, " +
-                        "social_cause VARCHAR(255) NOT NULL, " +
-                        "zipcode VARCHAR(10), " +  // CEP
-                        "street VARCHAR(255), " +
-                        "number VARCHAR(50), " +
-                        "neighborhood VARCHAR(255), " +
-                        "city VARCHAR(255), " +
-                        "state VARCHAR(2), " +  // Sigla de 2 caracteres
-                        "country VARCHAR(100) DEFAULT 'Brasil', " +
-                        "complement VARCHAR(255), " +
-                        "plan_id BIGINT, " +
-                        "FOREIGN KEY (plan_id) REFERENCES plans(id)" +
+                        "quantidade INT NOT NULL, " +
+                        "valor DECIMAL(10, 2) NOT NULL, " +
+                        "observacoes VARCHAR(255), " +
+                        "nome VARCHAR(100) NOT NULL, " +
+                        "idvenda_produto BIGINT, " +
+                        "FOREIGN KEY (idvenda_produto) REFERENCES vendas_produto(id)" +
                         ")"
         );
 
-        // Tabela de Usuários (herança SINGLE_TABLE)
         stmt.executeUpdate(
-                "CREATE TABLE IF NOT EXISTS users (" +
+                "CREATE TABLE IF NOT EXISTS venda (" +
                         "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
-                        "user_type VARCHAR(31) NOT NULL, " +  // Para discriminar ADMIN/USER
-                        "login VARCHAR(255) NOT NULL, " +
-                        "email VARCHAR(255) NOT NULL, " +
-                        "password VARCHAR(255) NOT NULL, " +
-                        "creation_date DATETIME, " +
-                        "institution_id BIGINT, " +
-                        "FOREIGN KEY (institution_id) REFERENCES institutions(id)" +
+                        "endereco_destino VARCHAR(200) NOT NULL, " + 
+                        "valor_cobrado DECIMAL(10, 2) NOT NULL, " +
+                        "data_hora DATETIME, " +
+                        "id_venda BIGINT, " +
+                        "FOREIGN KEY (id_venda) REFERENCES vendas(id)" +
+                        "id_vendedor BIGINT, " +
+                        "FOREIGN KEY (id_vendedor) REFERENCES vendedor(id)" +
+                        "id_cliente BIGINT, " +
+                        "FOREIGN KEY (id_cliente) REFERENCES clientes(id)" +
+                        "id_trans BIGINT, " +
+                        "FOREIGN KEY (id_trans) REFERENCES transportadora(id)" +
+                        "id_produto BIGINT, " +
+                        "FOREIGN KEY (id_produto) REFERENCES produtos(id)" +
+                        "idvenda_produto BIGINT, " +
+                        "FOREIGN KEY (idvenda_produto) REFERENCES vendas_produto(id)" +
                         ")"
         );
 
-        // Tabela de Arquivos (herança SINGLE_TABLE)
         stmt.executeUpdate(
-                "CREATE TABLE IF NOT EXISTS files (" +
+                "CREATE TABLE IF NOT EXISTS vendedor (" +
                         "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
-                        "file_type VARCHAR(31) NOT NULL," +
-                        "file_name VARCHAR(255) NOT NULL, " +
-                        "file_size INT, " +
-                        "file_release_date DATETIME, " +
-                        "file_location VARCHAR(255), " +
-                        "file_url VARCHAR(255)," +
-                        "duration_in_seconds BIGINT," +
-                        "user_id BIGINT NOT NULL," +
-                        "create_date DATETIME, " +
-                        "last_modifier DATETIME, " +
-                        "frequency BIGINT, " +
-                        "FOREIGN KEY (user_id) REFERENCES users(id)" +
-                        ");"
-        );
-
-        // Tabela de Permissões de Arquivo (ElementCollection)
-        stmt.executeUpdate(
-                "CREATE TABLE IF NOT EXISTS file_permissions (" +
-                        "file_id BIGINT NOT NULL, " +
-                        "user_id BIGINT NOT NULL, " +
-                        "permission VARCHAR(50) NOT NULL, " +
-                        "PRIMARY KEY (file_id, user_id, permission), " +
-                        "FOREIGN KEY (file_id) REFERENCES files(id)," +
-                        "FOREIGN KEY (user_id) REFERENCES users(id)" +
+                        "nome VARCHAR(255) NOT NULL," +
+                        "causa_social VARCHAR(255)," +
+                        "tipo VARCHAR(255)," +
+                        "nota_media DECIMAL(3, 2)," +
                         ")"
         );
 
-        // Tabela de Comentários
         stmt.executeUpdate(
-                "CREATE TABLE IF NOT EXISTS comments (" +
+                "CREATE TABLE IF NOT EXISTS transportadora (" +
                         "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
-                        "body TEXT, " +
-                        "time DATETIME, " +
-                        "author_id BIGINT NOT NULL, " +
-                        "file_id BIGINT NOT NULL, " +
-                        "FOREIGN KEY (author_id) REFERENCES users(id), " +
-                        "FOREIGN KEY (file_id) REFERENCES files(id)" +
-                        ")"
-        );
-
-        // Tabela de Operações de Arquivo
-        stmt.executeUpdate(
-                "CREATE TABLE IF NOT EXISTS file_operations (" +
-                        "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
-                        "file_id BIGINT NOT NULL, " +
-                        "user_id BIGINT NOT NULL, " +
-                        "receiver_id BIGINT, " +
-                        "operation_date DATETIME NOT NULL, " +
-                        "operation_type VARCHAR(50) NOT NULL, " +
-                        "FOREIGN KEY (file_id) REFERENCES files(id), " +
-                        "FOREIGN KEY (user_id) REFERENCES users(id), " +
-                        "FOREIGN KEY (receiver_id) REFERENCES users(id)" +
-                        ")"
-        );
-
-        // Tabela de Solicitações de Suporte
-        stmt.executeUpdate(
-                "CREATE TABLE IF NOT EXISTS support_requests (" +
-                        "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
-                        "author_id BIGINT NOT NULL, " +
-                        "admin_id BIGINT, " +
-                        "title VARCHAR(255) NOT NULL, " +
-                        "body TEXT NOT NULL, " +
-                        "file_id BIGINT, " +
-                        "status VARCHAR(50) NOT NULL, " +
-                        "creation_date DATETIME, " +
-                        "resolved_date DATETIME, " +
-                        "FOREIGN KEY (author_id) REFERENCES users(id), " +
-                        "FOREIGN KEY (admin_id) REFERENCES users(id), " +
-                        "FOREIGN KEY (file_id) REFERENCES files(id)" +
-                        ")"
-        );
-
-        // Tabela de Histórico de Versões
-        stmt.executeUpdate(
-                "CREATE TABLE IF NOT EXISTS versions_historical (" +
-                        "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
-                        "creation_date DATETIME, " +
-                        "editor_id BIGINT NOT NULL, " +
-                        "file_id BIGINT NOT NULL, " +
-                        "commit_message TEXT NOT NULL, " +
-                        "FOREIGN KEY (editor_id) REFERENCES users(id), " +
-                        "FOREIGN KEY (file_id) REFERENCES files(id)" +
+                        "nome VARCHAR(255) NOT NULL, " +
+                        "cidade VARCHAR(20) NOT NULL, " +
                         ")"
         );
 
         inserirDados(stmt);
     }
 
-    private void inserirDados(Statement stmt){
+    private static  void inserirDados(Statement stmt){
         for(int i = 0; i<100; i++){
             String nome = "cliente" + i;
 

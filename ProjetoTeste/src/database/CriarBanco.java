@@ -10,16 +10,16 @@ public class CriarBanco {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/";
     private static final String USER = "root";
     private static final String PASS = "root";
-    private static final String DB_NAME = "{nome do banco}";
+    private static final String DB_NAME = "bancosistemaecommerce";
 
-    public static void create() {
+    public static void criar() {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              Statement stmt = conn.createStatement()) {
 
             stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS " + DB_NAME);
             stmt.executeUpdate("USE " + DB_NAME);
 
-            CreateTables.criar(stmt);
+            CriarTabelas.criar(stmt);
 
             System.out.println("Banco de dados criado com sucesso!");
 

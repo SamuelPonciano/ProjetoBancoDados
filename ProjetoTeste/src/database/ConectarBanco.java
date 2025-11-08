@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConectarBanco {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/{nome do banco}";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/bancosistemaecommerce";
     private static final String USER = "root";
     private static final String PASS = "root";
 
