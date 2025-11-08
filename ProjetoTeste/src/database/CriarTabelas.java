@@ -67,6 +67,19 @@ class CriarTabelas {
                         ")"
         );
 
+        stmt.executeUpdate(
+                "CREATE TABLE IF NOT EXISTS vendas_produto (" +
+                        "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
+                        "endereco_destino VARCHAR(200) NOT NULL, " +
+                        "valor_cobrado DECIMAL(10, 2) NOT NULL, " +
+                        "data_hora DATETIME, " +
+                        "id_produto BIGINT, " +
+                        "FOREIGN KEY (id_produto) REFERENCES produtos(id), " +
+                        "id_venda BIGINT, " +
+                        "FOREIGN KEY (id_venda) REFERENCES venda(id)" +
+                        ")"
+        );
+
         inserirDados(stmt);
     }
 
