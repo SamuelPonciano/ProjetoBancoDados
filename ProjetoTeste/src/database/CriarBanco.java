@@ -20,6 +20,9 @@ public class CriarBanco {
             stmt.executeUpdate("USE " + DB_NAME);
 
             CriarTabelas.criar(stmt);
+            CriarFunction.criar(stmt);
+            CriarTriggers.criar(stmt);
+            CriarUsuario.criar(stmt);
 
             System.out.println("Banco de dados criado com sucesso!");
 
