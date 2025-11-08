@@ -1,33 +1,31 @@
 package database;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class CriarFunction {
     public static void criar(Statement stmt) throws SQLException {
         stmt.executeUpdate(
-            "CREATE PROCEDURE calcular_idade (IN p_id_cliente INT)" +
+            "CREATE FUNCTION calcular_idade (p_id_cliente INT)" +
+            "RETURNS INT" +
+            "DETERMINISTIC" +
             "BEGIN" +
-            "DECLARE data_atual = DATE;" +
-            "DECLARE idade = 0;" +
-            "SELECT FROM Cliente AS c WHERE c.id = p_id_cliente " +
-            "SET idade = data_atual - c.dataNasc" +
-            "RETURNS idade" +
+            "   DECLARE data_atual DATE;" +
+            "   DECLARE idade INT;" +
+            "   SELECT c.dataNasc INTO data_atual FROM Cliente AS c WHERE c.id = p_id_cliente;" +
+            "   SET idade = TIMESTAMPDIFF(YEAR, data_atual, CURDATE());" +
+            "   RETURN idade;" +
             "END"
         );
+
+        stmt.executeUpdate(
+            "CREATE FUNCTION Soma_fretes(dia DATE) " +
+            "RETURNS DECIMAL(10,2) " + 
+            "DETERMINISTIC " +
+            "BEGIN " +
+            
+        );
+
+
     }
 }
-
-"""CREATE FUNCTION Verificar_dias(dia DATE)
-RETURNS BOOLEAN
-
-BEGIN
-    DECLARE dia_Atual DATE;
-    DECLARE tempo INT;
-
-    SET dia_Atual = CURDATE();
-    SET tempo = DATEDIFF(dia_Atual, dia);
-
-    IF tempo > 100 THEN
-        RETURN TRUE;
-    ELSE
-        RETURN FALSE;
-    END IF;
-END""";
