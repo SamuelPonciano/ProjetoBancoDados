@@ -5,10 +5,9 @@ import java.sql.Statement;
 
 class CriarTabelas {
     public static void criar(Statement stmt) throws SQLException {
-        // Tabela de Planos
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS clientes (" +
-                        "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
+                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "nome VARCHAR(255) NOT NULL, " +
                         "sexo ENUM('F', 'M', 'O'), " +
                         "idade int, " +
@@ -18,7 +17,7 @@ class CriarTabelas {
         
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS vendedor (" +
-                        "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
+                        "id INT AUTO_INCREMENT PRIMARY KEY," +
                         "nome VARCHAR(255) NOT NULL," +
                         "causa_social VARCHAR(255)," +
                         "tipo VARCHAR(255)," +
@@ -28,20 +27,20 @@ class CriarTabelas {
         
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS transportadora (" +
-                        "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
+                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "nome VARCHAR(255) NOT NULL, " +
                         "cidade VARCHAR(20) NOT NULL, " +
                         ")"
         );
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS venda (" +
-                        "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
+                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "endereco_destino VARCHAR(200) NOT NULL, " + 
                         "valor_cobrado DECIMAL(10, 2) NOT NULL, " +
                         "data_hora DATETIME, " +
-                        "id_vendedor BIGINT, " +
-                        "id_cliente BIGINT, " +
-                        "id_trans BIGINT, " +
+                        "id_vendedor INT, " +
+                        "id_cliente INT, " +
+                        "id_trans INT, " +
                         "FOREIGN KEY (id_vendedor) REFERENCES vendedor(id), " +
                         "FOREIGN KEY (id_cliente) REFERENCES clientes(id), " +
                         "FOREIGN KEY (id_trans) REFERENCES transportadora(id)" +
@@ -50,7 +49,7 @@ class CriarTabelas {
 
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS produtos (" +
-                        "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
+                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "nome VARCHAR(100) NOT NULL, " +
                         "quantidade INT NOT NULL, " +
                         "valor DECIMAL(10, 2) NOT NULL, " +
@@ -60,9 +59,9 @@ class CriarTabelas {
 
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS vendas_produto (" +
-                        "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
-                        "id_produto BIGINT, " +
-                        "id_venda BIGINT, " +
+                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                        "id_produto INT, " +
+                        "id_venda INT, " +
                         "FOREIGN KEY (id_produto) REFERENCES produtos(id), " +
                         "FOREIGN KEY (id_venda) REFERENCES venda(id)" +
                         ")"
@@ -70,7 +69,7 @@ class CriarTabelas {
 
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS funcionario_especial (" +
-                        "id_vendedor BIGINT PRIMARY KEY, " +
+                        "id_vendedor INT PRIMARY KEY, " +
                         "bonus DECIMAL(10, 2) DEFAULT 0.00, " +
                         "FOREIGN KEY (id_vendedor) REFERENCES vendedor(id)" +
                 ")"
@@ -78,10 +77,21 @@ class CriarTabelas {
 
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS cliente_especial (" +
-                        "id_cliente BIGINT PRIMARY KEY, " +
+                        "id_cliente INT PRIMARY KEY, " +
                         "cashback DECIMAL(5, 2) DEFAULT 0.00, " +
                         "FOREIGN KEY (id_cliente) REFERENCES clientes(id)" +
                 ")"
+        );
+
+        stmt.executeUpdate(
+                "CREATE TABLE IF NOT EXISTS funcionario (" +
+                "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                "nome VARCHAR(100) NOT NULL, " +
+                "sexo ENUM('F', 'M', 'O'), " +
+                "cargo ENUM('vendedor', 'gerente', 'CEO'), " +
+                "salario DECIMAL(10, 2) NOT NULL " +
+                
+        ")"
         );
 
         inserirDados(stmt);
