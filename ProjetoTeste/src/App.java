@@ -23,6 +23,7 @@ public class App {
 
         try (Connection conn = DriverManager.getConnection(url, usuario, senha)) {
 
+            // Executa menu conforme tipo de usuário
             switch (usuario) {
                 case "administrador" -> AdmMenu.menu(conn, sc);
                 case "gerente" -> GerenteMenu.menu(conn, sc);

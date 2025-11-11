@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 public class Functions {
 
-    // Chama a função Calcular_idade
     public static void calculaIdade(Connection conn, Scanner sc) {
         try {
             System.out.print("Digite o ID do cliente: ");
@@ -32,7 +31,6 @@ public class Functions {
         }
     }
 
-    // Chama a função Soma_fretes
     public static void somaFretes(Connection conn, Scanner sc) {
     try {
         System.out.print("Digite o endereço de destino: ");
@@ -56,15 +54,14 @@ public class Functions {
 }
 
 
-    // Chama a função Arrecadado
-    public static void arrecadado(Connection conn, Scanner sc) {
+   public static void arrecadado(Connection conn, Scanner sc) {
     try {
         System.out.print("Digite a data (YYYY-MM-DD): ");
         String data = sc.nextLine().trim();
 
         System.out.print("Digite o ID do vendedor: ");
         int idVendedor = sc.nextInt();
-        sc.nextLine(); // limpar buffer
+        sc.nextLine();
 
         String sql = "SELECT Arrecadado(?, ?) AS total";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {

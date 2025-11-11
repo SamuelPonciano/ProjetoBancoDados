@@ -7,13 +7,12 @@ public class CriarProcedures {
 
     public static void criar(Statement stmt) throws SQLException {
 
-        // Deletar procedures antigas caso existam
+
         stmt.executeUpdate("DROP PROCEDURE IF EXISTS Reajuste");
         stmt.executeUpdate("DROP PROCEDURE IF EXISTS Sorteio");
         stmt.executeUpdate("DROP PROCEDURE IF EXISTS RegistrarVenda");
         stmt.executeUpdate("DROP PROCEDURE IF EXISTS EstatisticasVendas");
 
-        // Procedure para reajuste salarial
         stmt.executeUpdate(
             "CREATE PROCEDURE Reajuste(IN p_percentual DECIMAL(5,2), IN p_cargo VARCHAR(20)) " +
             "BEGIN " +
@@ -23,7 +22,7 @@ public class CriarProcedures {
             "END"
         );
 
-        // Procedure para sorteio de cliente
+
         stmt.executeUpdate(
             "CREATE PROCEDURE Sorteio() " +
             "BEGIN " +
@@ -42,7 +41,6 @@ public class CriarProcedures {
             "END"
         );
 
-        // Procedure para registrar venda
         stmt.executeUpdate(
             "CREATE PROCEDURE RegistrarVenda(IN produto_id INT, IN venda_id INT) " +
             "BEGIN " +
@@ -55,7 +53,6 @@ public class CriarProcedures {
             "END"
         );
 
-        // Procedure para estatísticas de vendas
         stmt.executeUpdate(
             "CREATE PROCEDURE EstatisticasVendas() " +
             "BEGIN " +

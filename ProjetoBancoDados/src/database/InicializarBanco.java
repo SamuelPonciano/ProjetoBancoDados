@@ -12,16 +12,13 @@ public class InicializarBanco {
     private static final String PASS = "root";
     private static final String DB_NAME = "bancosistemaecommerce";
 
-    // Cria o banco de dados e inicializa tudo
     public static void criar() {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              Statement stmt = conn.createStatement()) {
 
-            // Cria o banco, se não existir
             stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS " + DB_NAME);
             stmt.executeUpdate("USE " + DB_NAME);
 
-            // Cria tabelas, funções, triggers, views, procedures e usuário
             CriarTabelas.criar(stmt);
             InserirDados.inserir(conn);
             CriarFunction.criar(stmt);
@@ -37,7 +34,6 @@ public class InicializarBanco {
         }
     }
 
-    // Deleta o banco de dados inteiro
     public static void delete() {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              Statement stmt = conn.createStatement()) {

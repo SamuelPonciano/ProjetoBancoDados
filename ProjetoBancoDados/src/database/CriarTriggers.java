@@ -6,7 +6,6 @@ import java.sql.Statement;
 public class CriarTriggers {
     public static void criar(Statement stmt) throws SQLException {
 
-        // Trigger para adicionar bônus do funcionário
         stmt.executeUpdate(
             "CREATE TRIGGER Add_funcionario_especial " +
             "AFTER INSERT ON venda " +
@@ -18,7 +17,6 @@ public class CriarTriggers {
             "ON DUPLICATE KEY UPDATE bonus = bonus + (NEW.valor_cobrado * 0.05)"
         );
 
-        // Trigger para adicionar cashback ao cliente
         stmt.executeUpdate(
             "CREATE TRIGGER Add_cliente_especial " +
             "AFTER INSERT ON venda " +
@@ -30,7 +28,6 @@ public class CriarTriggers {
             "ON DUPLICATE KEY UPDATE cashback = cashback + (NEW.valor_cobrado * 0.02)"
         );
 
-        // Trigger para remover cliente especial quando cashback zerar
         stmt.executeUpdate(
             "CREATE TRIGGER Remove_cliente_especial " +
             "AFTER UPDATE ON venda " +

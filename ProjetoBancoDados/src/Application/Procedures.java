@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 public class Procedures {
 
-    // Chama a procedure Reajuste
     public static void reajusteSalarios(Connection conn, Scanner sc) {
         try {
             System.out.print("Digite o percentual de reajuste: ");
@@ -28,7 +27,6 @@ public class Procedures {
         }
     }
 
-    // Chama a procedure Sorteio
     public static void sorteioClientes(Connection conn, Scanner sc) {
         try {
             CallableStatement stmt = conn.prepareCall("{CALL Sorteio()}");
@@ -44,7 +42,6 @@ public class Procedures {
         }
     }
 
-    // Chama a procedure RegistrarVenda
     public static void registrarVenda(Connection conn, Scanner sc) {
         try {
             System.out.print("ID do produto: ");
@@ -67,7 +64,6 @@ public class Procedures {
         }
     }
 
-    // Chama a procedure EstatisticasVendas
     public static void estatisticasVendas(Connection conn) {
     try {
         CallableStatement stmt = conn.prepareCall("{CALL EstatisticasVendas()}");

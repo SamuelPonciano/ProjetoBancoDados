@@ -9,7 +9,6 @@ public class InserirDados {
     public static void inserir(java.sql.Connection conn) throws SQLException {
         Random random = new Random();
 
-        // Inserindo clientes
         String[] nomes = {"Ana", "Bruno", "Carlos", "Daniela", "Eduardo", "Fernanda", "Gabriel", "Helena", "Igor", "Juliana"};
         String[] sexos = {"F", "M", "O"};
 
@@ -30,7 +29,6 @@ public class InserirDados {
             psCliente.executeUpdate();
         }
 
-        // Inserindo produtos
         String[] produtos = {"Arroz", "Feijão", "Macarrão", "Açúcar", "Sal", "Óleo", "Leite", "Café", "Pão", "Manteiga",
                              "Queijo", "Presunto", "Frango", "Carne", "Peixe", "Tomate", "Batata", "Cebola", "Alface", "Laranja"};
 

@@ -6,7 +6,6 @@ import java.sql.Statement;
 public class CriarTabelas {
 
     public static void criar(Statement stmt) throws SQLException {
-        // Tabela clientes
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS clientes (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -17,7 +16,6 @@ public class CriarTabelas {
                         ")"
         );
 
-        // Tabela vendedor
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS vendedor (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -28,7 +26,6 @@ public class CriarTabelas {
                         ")"
         );
 
-        // Tabela transportadora
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS transportadora (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -37,7 +34,6 @@ public class CriarTabelas {
                         ")"
         );
 
-        // Tabela venda
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS venda (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -53,7 +49,6 @@ public class CriarTabelas {
                         ")"
         );
 
-        // Tabela produtos
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS produtos (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -64,7 +59,7 @@ public class CriarTabelas {
                         ")"
         );
 
-        // Tabela vendas_produto
+
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS vendas_produto (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -75,7 +70,6 @@ public class CriarTabelas {
                         ")"
         );
 
-        // Tabela funcionario_especial
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS funcionario_especial (" +
                         "id_vendedor INT PRIMARY KEY, " +
@@ -84,7 +78,6 @@ public class CriarTabelas {
                         ")"
         );
 
-        // Tabela cliente_especial
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS cliente_especial (" +
                         "id_cliente INT PRIMARY KEY, " +
@@ -93,7 +86,6 @@ public class CriarTabelas {
                         ")"
         );
 
-        // Tabela funcionario
         stmt.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS funcionario (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +

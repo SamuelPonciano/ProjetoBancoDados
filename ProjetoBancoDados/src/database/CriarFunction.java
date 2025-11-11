@@ -6,7 +6,6 @@ import java.sql.Statement;
 public class CriarFunction {
     public static void criar(Statement stmt) throws SQLException {
 
-        // Função para calcular idade
         stmt.executeUpdate(
             "CREATE FUNCTION Calcular_idade(p_id_cliente INT) " +
             "RETURNS INT DETERMINISTIC " +
@@ -19,7 +18,6 @@ public class CriarFunction {
             "END"
         );
 
-        // Função para somar fretes de um dia
        stmt.executeUpdate(
         "CREATE FUNCTION Soma_fretes(destino VARCHAR(200)) " +
         "RETURNS DECIMAL(10,2) DETERMINISTIC READS SQL DATA " +
@@ -33,8 +31,6 @@ public class CriarFunction {
         "END"
     );
 
-
-        // Função para arrecadado por vendedor em um dia
         stmt.executeUpdate(
             "CREATE FUNCTION Arrecadado(dia DATE, id_vend BIGINT) " +
             "RETURNS DECIMAL(10,2) DETERMINISTIC READS SQL DATA " +

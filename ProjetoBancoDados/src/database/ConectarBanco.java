@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConectarBanco {
 
     private static final String URL = "jdbc:mysql://localhost:3306/";
-    private static final String BANCO = "bancosistemaecommerce"; // seu banco existente
+    private static final String BANCO = "bancosistemaecommerce";
     private static final String USUARIO = "root";
     private static final String SENHA = "root";
 
@@ -20,7 +20,6 @@ public class ConectarBanco {
     }
 
     public static Connection getConnection() throws SQLException {
-        // Conexão direta com o banco existente
         return DriverManager.getConnection(
             URL + BANCO + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
             USUARIO, SENHA

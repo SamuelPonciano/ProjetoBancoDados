@@ -5,7 +5,6 @@ import java.sql.Statement;
 
 public class CriarViews {
     public static void criar(Statement stmt) throws SQLException {
-        // Total de vendas por cliente
         stmt.executeUpdate(
             "CREATE VIEW totalVenda_Cliente AS " +
             "SELECT c.id AS id_cliente, c.nome AS nome_cliente, " +
@@ -16,7 +15,6 @@ public class CriarViews {
             "GROUP BY c.id, c.nome"
         );
 
-        // Total de vendas por transportadora
         stmt.executeUpdate(
             "CREATE VIEW totalVendas_transportadora AS " +
             "SELECT t.id AS id_transportadora, t.nome AS nome_transportadora, " +
@@ -27,7 +25,6 @@ public class CriarViews {
             "GROUP BY t.id, t.nome"
         );
 
-        // Cashback para clientes especiais
         stmt.executeUpdate(
             "CREATE OR REPLACE VIEW view_produtos_por_vendedor AS " +
             "SELECT " +
