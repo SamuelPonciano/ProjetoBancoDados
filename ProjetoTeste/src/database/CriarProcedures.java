@@ -4,7 +4,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CriarProcedures {
+
     public static void criar(Statement stmt) throws SQLException {
+
+        // Deletar procedures antigas caso existam
+        stmt.executeUpdate("DROP PROCEDURE IF EXISTS Reajuste");
+        stmt.executeUpdate("DROP PROCEDURE IF EXISTS Sorteio");
+        stmt.executeUpdate("DROP PROCEDURE IF EXISTS RegistrarVenda");
+        stmt.executeUpdate("DROP PROCEDURE IF EXISTS EstatisticasVendas");
+
+        // Procedure para reajuste salarial
         stmt.executeUpdate(
             "CREATE PROCEDURE Reajuste(IN p_percentual DECIMAL(5,2), IN p_cargo VARCHAR(20)) " +
             "BEGIN " +
@@ -14,6 +23,7 @@ public class CriarProcedures {
             "END"
         );
 
+        // Procedure para sorteio de cliente
         stmt.executeUpdate(
             "CREATE PROCEDURE Sorteio() " +
             "BEGIN " +
@@ -32,61 +42,63 @@ public class CriarProcedures {
             "END"
         );
 
+        // Procedure para registrar venda
         stmt.executeUpdate(
-            "CREATE PROCEDURE RegistrarVenda(IN produto_id INT, IN venda_id INT)" + 
+            "CREATE PROCEDURE RegistrarVenda(IN produto_id INT, IN venda_id INT) " +
             "BEGIN " +
-            "   INSERT INTO venda_produtos (id_venda, id_produto) " +
+            "   INSERT INTO vendas_produto (id_venda, id_produto) " +
             "   VALUES (venda_id, produto_id); " +
             "   UPDATE produtos " +
             "   SET quantidade = quantidade - 1 " +
             "   WHERE id = produto_id; " +
             "   SELECT 'Venda registrada e estoque atualizado' AS mensagem; " +
-            "END"   
+            "END"
         );
 
+        // Procedure para estatísticas de vendas
         stmt.executeUpdate(
-            "CREATE PROCEDURE EstatisticasVendas()" +
+            "CREATE PROCEDURE EstatisticasVendas() " +
             "BEGIN " +
             "   DECLARE produto_Mais INT; " +
             "   DECLARE produto_Menos INT; " +
-            " " + 
-            "   SELECT vp.id_produto INTO produto_Mais " +
-            "   FROM vendas_produto vp " +
-            "   GROUP BY vp.id_produto " +
+
+            "   SELECT id_produto INTO produto_Mais " +
+            "   FROM vendas_produto " +
+            "   GROUP BY id_produto " +
             "   ORDER BY COUNT(*) DESC " +
             "   LIMIT 1; " +
-            " " +
-            "   SELECT vp.id_produto INTO produto_Menos " +
-            "   FROM vendas_produto vp " +
-            "   GROUP BY vp.id_produto " +
+
+            "   SELECT id_produto INTO produto_Menos " +
+            "   FROM vendas_produto " +
+            "   GROUP BY id_produto " +
             "   ORDER BY COUNT(*) ASC " +
             "   LIMIT 1; " +
-            " " +
+
             "   SELECT p.nome AS produto_mais_vendido, " +
-            "       vdr.nome AS vendedor_associado, " +
-            "       COUNT(vp.id_produto) AS total_vendas, " +
-            "       SUM(v.valor_cobrado) AS valor_total, " +
-            "       MONTH( v.data_venda) AS mes " +
-            "       SUM(v.valor_cobrado) AS valor_mes" +
+            "          vdr.nome AS vendedor_associado, " +
+            "          COUNT(vp.id_produto) AS total_vendas, " +
+            "          SUM(v.valor_cobrado) AS valor_total, " +
+            "          MONTH(v.data_hora) AS mes " +
             "   FROM vendas_produto vp " +
             "   JOIN produtos p ON vp.id_produto = p.id " +
             "   JOIN venda v ON vp.id_venda = v.id " +
-            "   JOIN vendedor vdr ON v.id_vendedor = vdr.id " + 
+            "   JOIN vendedor vdr ON v.id_vendedor = vdr.id " +
             "   WHERE vp.id_produto = produto_Mais " +
-            "   GROUP BY p.nome, vdr.nome, MONTH(v.data_venda); " +
-            "   ORDER BY valor_mes DESC; " +
-            " " +
+            "   GROUP BY p.nome, vdr.nome, MONTH(v.data_hora) " +
+            "   ORDER BY valor_total DESC; " +
+
             "   SELECT p.nome AS produto_menos_vendido, " +
-            "       COUNT(vp.id_produto) AS total_vendas, " +
-            "       SUM(v.valor_cobrado) AS valor_total, " +
-            "       MONTH( v.data_venda) AS mes, " +
-            "       SUM(v.valor_cobrado) AS valor_mes," +
+            "          vdr.nome AS vendedor_associado, " +
+            "          COUNT(vp.id_produto) AS total_vendas, " +
+            "          SUM(v.valor_cobrado) AS valor_total, " +
+            "          MONTH(v.data_hora) AS mes " +
             "   FROM vendas_produto vp " +
             "   JOIN produtos p ON vp.id_produto = p.id " +
             "   JOIN venda v ON vp.id_venda = v.id " +
+            "   JOIN vendedor vdr ON v.id_vendedor = vdr.id " +
             "   WHERE vp.id_produto = produto_Menos " +
-            "   GROUP BY p.nome, MONTH(v.data_venda) " +
-            "   ORDER BY valor_mes ASC " +
+            "   GROUP BY p.nome, vdr.nome, MONTH(v.data_hora) " +
+            "   ORDER BY valor_total ASC; " +
             "END"
         );
     }

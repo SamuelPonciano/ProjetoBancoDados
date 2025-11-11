@@ -3,35 +3,27 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class ConectarBanco {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/bancosistemaecommerce";
-    private static final String USER = "root";
-    private static final String PASS = "root";
 
-    private static final Properties connectionProperties = new Properties();
+    private static final String URL = "jdbc:mysql://localhost:3306/";
+    private static final String BANCO = "bancosistemaecommerce"; // seu banco existente
+    private static final String USUARIO = "root";
+    private static final String SENHA = "root";
 
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            connectionProperties.put("user", USER);
-            connectionProperties.put("password", PASS);
-            connectionProperties.put("useSSL", "false");
-            connectionProperties.put("autoReconnect", "true");
-            connectionProperties.put("characterEncoding", "UTF-8");
-            connectionProperties.put("useUnicode", "true");
-            connectionProperties.put("serverTimezone", "UTC");
-            connectionProperties.put("rewriteBatchedStatements", "true");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Driver JDBC não encontrado", e);
+            throw new RuntimeException("Driver MySQL não encontrado", e);
         }
     }
 
     public static Connection getConnection() throws SQLException {
-        CriarBanco.criar();
-        return DriverManager.getConnection(DB_URL, connectionProperties);
+        // Conexão direta com o banco existente
+        return DriverManager.getConnection(
+            URL + BANCO + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
+            USUARIO, SENHA
+        );
     }
-
 }
