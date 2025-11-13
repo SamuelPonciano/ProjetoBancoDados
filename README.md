@@ -9,7 +9,7 @@ O objetivo é praticar a manipulação de dados, o uso de **procedures**, **trig
 - **Samuel Ponciano**  
 - **Rhydrian Coutinho**  
 - **Nathan Vinicius**  
-- **Pedro**
+- **Pedro Avellar**
 
 ---
 
